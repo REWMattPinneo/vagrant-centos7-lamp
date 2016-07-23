@@ -29,5 +29,5 @@ systemctl restart httpd
 
 
 #Vhosts
-cp /vagrant/vhosts.conf /etc/httpd/conf/vhosts.conf
+ln -s /vagrant/vhosts.conf /etc/httpd/conf.d/vhosts.conf
 systemctl restart httpd
