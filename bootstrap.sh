@@ -1,4 +1,7 @@
-yum update
+yum clean all
+yum upgrade
+
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 yum -y install httpd
@@ -6,6 +9,8 @@ systemctl enable httpd
 systemctl start httpd
 rm -rf /var/www/html
 ln -s /vagrant /var/www/html
+setenforce 0
+sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
 
 yum -y install mariadb-server
 systemctl enable mariadb.service
@@ -25,9 +30,17 @@ xdebug.profiler_enable = 0
 xdebug.profiler_output_dir = "/var/log/xdebug"
 xdebug.overload_var_dump = 0
 _EOF_
-systemctl restart httpd
-
+systemctl restart httpd.service
 
 #Vhosts
-cp /vagrant/vhosts.conf /etc/httpd/conf/vhosts.conf
-systemctl restart httpd
+cat << _EOF_ >> /etc/httpd/conf/httpd.conf
+<VirtualHost *:80>
+	ServerName frontend.local
+	DocumentRoot /var/www/html/frontend
+</VirtualHost>
+<VirtualHost *:80>
+	ServerName backend.local
+	DocumentRoot /var/www/html/backend
+</VirtualHost>
+_EOF_
+systemctl restart httpd.service

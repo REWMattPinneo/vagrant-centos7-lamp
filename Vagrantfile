@@ -1,11 +1,13 @@
 Vagrant.configure(2) do |config|
-	config.vm.box = "geerlingguy/centos7"
+	config.vm.box = "centos/7"
 	
-
 	config.vm.provider "virtualbox" do |v|
 	  v.customize ["modifyvm", :id, "--memory", 4096]
-	  v.customize ["modifyvm", :id, "--uart1", "0x3f8", "4"]
 	end
+
+	config.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
+	config.vm.synced_folder ".", "/vagrant", type: "virtualbox", mount_options: ["dmode=777,fmode=777"]
+
 
 	###---Os X Yosemite specific------
 	config.trigger.after [:provision, :up, :reload] do
@@ -14,7 +16,6 @@ Vagrant.configure(2) do |config|
 		')
 	end
 	###
-
 
 	# Apache
 	config.vm.network "forwarded_port", guest: 80, host: 80, auto_correct: true
@@ -25,7 +26,6 @@ Vagrant.configure(2) do |config|
 	
 	# MySQL
 	config.vm.network "forwarded_port", guest: 3306, host: 3306, auto_correct: true
-
 
 	config.vm.provision :shell, path: "bootstrap.sh"
 end
