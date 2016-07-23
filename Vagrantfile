@@ -2,6 +2,11 @@ Vagrant.configure(2) do |config|
 	config.vm.box = "geerlingguy/centos7"
 	
 
+	config.vm.provider "virtualbox" do |v|
+	  v.customize ["modifyvm", :id, "--memory", 4096]
+	  v.customize ["modifyvm", :id, "--uart1", "0x3f8", "4"]
+	end
+
 	###---Os X Yosemite specific------
 	config.trigger.after [:provision, :up, :reload] do
 		system('
@@ -21,9 +26,6 @@ Vagrant.configure(2) do |config|
 	# MySQL
 	config.vm.network "forwarded_port", guest: 3306, host: 3306, auto_correct: true
 
-	config.vm.provider "virtualbox" do |v|
-	  v.customize ["modifyvm", :id, "--memory", 4096]
-	end
 
 	config.vm.provision :shell, path: "bootstrap.sh"
 end
