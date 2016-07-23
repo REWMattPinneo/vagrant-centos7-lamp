@@ -26,3 +26,10 @@ xdebug.profiler_output_dir = "/var/log/xdebug"
 xdebug.overload_var_dump = 0
 _EOF_
 service httpd restart
+
+#Vhosts
+cp /vagrant/vhosts.conf /etc/httpd/conf/vhosts.conf
+cat << _EOF_ >> /etc/httpd/conf/httpd.conf
+IncludeOptional vhosts.conf
+_EOF_
+service httpd restart
