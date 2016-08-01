@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
 	###
 
 	# Apache
-	config.vm.network "forwarded_port", guest: 80, host: 80, auto_correct: true
+	# config.vm.network "forwarded_port", guest: 80, host: 80, auto_correct: true
 
 	###---Os X specific------
 	config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true

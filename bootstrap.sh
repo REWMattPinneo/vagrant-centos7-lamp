@@ -1,5 +1,5 @@
 yum clean all
-yum upgrade
+yum -y upgrade
 
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
