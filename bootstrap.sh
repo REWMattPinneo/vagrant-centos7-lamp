@@ -32,6 +32,9 @@ xdebug.overload_var_dump = 0
 _EOF_
 systemctl restart httpd.service
 
+#Allowing Apache override to all 
+sed -i "s/AllowOverride None/AllowOverride All/g" /etc/httpd/conf/httpd.conf
+
 #Vhosts
 cat << _EOF_ >> /etc/httpd/conf/httpd.conf
 <VirtualHost *:80>
